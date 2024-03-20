@@ -1,29 +1,43 @@
 import 'package:flutter/material.dart';
 
-// NOTE - Colores hexadecimales necesitan delante '0XFF'
-const Color _customColor = Color(0xFF5C11D4);
+// NOTE - Para usar hexadecimales de color en flutter usa la notación '0xFF49149F'
 
-const List<Color> _colorThemes = [
-  _customColor,
+const List<Color> colorList = [
   Colors.blue,
   Colors.teal,
   Colors.green,
-  Colors.yellow,
+  Colors.red,
+  Colors.purple,
+  Colors.deepPurple,
   Colors.orange,
   Colors.pink,
+  Colors.pinkAccent,
 ];
 
 class AppTheme {
   final int selectedColor;
+  final bool isDarkMode;
 
-  AppTheme({this.selectedColor = 0})
-      : assert(selectedColor >= 0 && selectedColor < _colorThemes.length,
-            'Color must be between 0 and ${_colorThemes.length - 1}');
+  AppTheme({
+    this.selectedColor = 0,
+    this.isDarkMode = false,
+  })  : assert(selectedColor >= 0, 'Selected color must be great then 0'),
+        assert(selectedColor < colorList.length,
+            'Selected color must be less than ${colorList.length - 1}');
 
-  ThemeData theme() {
-    return ThemeData(
-        useMaterial3: true,
-        // colorScheme: ColorScheme.fromSeed(seedColor: Colors.black)); // por default
-        colorSchemeSeed: _colorThemes[selectedColor]); // por default
-  }
+  ThemeData getTheme() => ThemeData(
+      useMaterial3: true,
+      brightness: isDarkMode ? Brightness.dark : Brightness.light,
+      colorSchemeSeed: colorList[selectedColor],
+      appBarTheme: const AppBarTheme(centerTitle: true)
+  );
+
+  AppTheme copyWith({
+    int? selectedColor,
+    bool? isDarkMode
+  }) => AppTheme(
+    selectedColor: selectedColor ?? this.selectedColor,
+    isDarkMode: isDarkMode ?? this.isDarkMode,
+  );
+
 }

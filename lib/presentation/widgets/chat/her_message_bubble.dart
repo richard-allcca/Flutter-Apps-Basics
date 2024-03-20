@@ -8,6 +8,8 @@ class HerMessageBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    // Obtiene el color del contexto definido en main
     final colors = Theme.of(context).colorScheme;
 
     return Column(
@@ -15,27 +17,34 @@ class HerMessageBubble extends StatelessWidget {
       children: [
         Container(
           decoration: BoxDecoration(
-              color: colors.secondary, borderRadius: BorderRadius.circular(20)),
+              color: colors.secondary,
+              borderRadius: BorderRadius.circular(20)
+          ),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             child: Text(
               message.text,
-              style: const TextStyle(fontSize: 18),
-            ),
+                style: const TextStyle(color: Colors.white)),
           ),
         ),
+
         const SizedBox(height: 5),
-        _ImageBubble(message.imageUrl.toString()),
+
+        _ImageBubble(message.imageUrl!),
+
         const SizedBox(height: 10),
       ],
     );
   }
 }
 
-class _ImageBubble extends StatelessWidget {
-  final String imageMessageUrl;
+// NOTE - url https://yesno.wtf/api
 
-  const _ImageBubble(this.imageMessageUrl);
+class _ImageBubble extends StatelessWidget {
+  final String imageUrl;
+
+  const _ImageBubble(this.imageUrl);
+
 
   @override
   Widget build(BuildContext context) {
@@ -44,40 +53,22 @@ class _ImageBubble extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(20),
       child: Image.network(
-        imageMessageUrl,
-        width: size.width * 0.6,
-        height: 170,
+        imageUrl,
+        width: size.width * 0.7,
+        height: 150,
+        // Si le das width y height necesitas 'fit' para que se ajuste el ctn
         fit: BoxFit.cover,
         loadingBuilder: (context, child, loadingProgress) {
-          if (loadingProgress == null) return child;
+          if(loadingProgress == null) return child;
 
           return Container(
             width: size.width * 0.7,
             height: 150,
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-            child: const Text(
-              'Cargando avatar...',
-              style: TextStyle(fontSize: 22, color: Colors.lightBlue),
-            ),
+            child: const Text('Ella esta escribiendo'),
           );
         },
-        // NOTE - Example loading of documentation
-
-        // loadingBuilder: (BuildContext context, Widget child,
-        //     ImageChunkEvent? loadingProgress) {
-        //   if (loadingProgress == null) {
-        //     return child;
-        //   }
-        //   return Center(
-        //     child: CircularProgressIndicator(
-        //       value: loadingProgress.expectedTotalBytes != null
-        //           ? loadingProgress.cumulativeBytesLoaded /
-        //               loadingProgress.expectedTotalBytes!
-        //           : null,
-        //     ),
-        //   );
-        // },
-      ),
+      )
     );
   }
 }

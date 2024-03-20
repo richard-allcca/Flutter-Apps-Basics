@@ -1,78 +1,99 @@
-# flutter_application_1
+# widgets_app
 
-Proyecto creado con
-
-```bash
-    Node 16.17.0
+```CDM
+    node 16.17.0
 ```
 
-A new Flutter project.
+<details>
+  <summary>Table of Contents</summary>
 
-- los nombres de proyecto deben ser minúsculas y separados con guion bajo
+- <a href="#notes-of-widgets">Notes of Widgets</a>
+- <a href="#configuration-to-use-assets">Configuration to used Assets</a>
+- <a href="#notes-on-folders-and-files">Notas sobre carpetas y archivos</a>
+- <a href="#configuration-for-state-management">Configuration for state management</a>
 
-## Getting Started
+</details>
 
-This project is a starting point for a Flutter application.
+## Links
 
-A few resources to get you started if this is your first Flutter project:
+- [Go router](https://pub.dev/packages/go_router)
+- [Material example widgets](https://m3.material.io/develop/flutter)
+- [Provider](https://pub.dev/packages/provider)
+- [Riverpod](https://docs-v2.riverpod.dev/docs/concepts/about_code_generation)
+- [Quicktype, format](https://quicktype.io/)
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Notes on folders and files
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+La carpeta 'domain' se utiliza para almacenar las entidades de tu aplicación. Las entidades son objetos que representan conceptos clave en tu dominio de negocio. Por ejemplo, si estás construyendo una aplicación de comercio electrónico, podrías tener entidades como 'Producto', 'Carrito de compras' o 'Usuario'.
 
-## Shortcuts
+también puede contener otros elementos relacionados con la lógica de negocio, como interfaces de repositorio, casos de uso y validaciones. Estos elementos ayudan a definir cómo interactúan las entidades con otras capas de la aplicación, como la capa de infraestructura o la capa de presentación.
 
-- import 'package:flutter/material.dart';
+Las entidades encapsulan la lógica y el comportamiento relacionados con el dominio
 
-```bash
-    importM
+La carpeta 'infrastructure' es un punto medio entre domain y presentation
+
+## Notes of Widgets
+
+### ListView() y sus tipos
+
+El widget ListView se utiliza para construir una lista de widgets desplazables
+
+ListView.builder: Este tipo de ListView es ideal cuando tienes una lista de elementos de longitud desconocida o muy grande. Utiliza un constructor de elementos bajo demanda, lo que significa que solo se construyen los elementos visibles en la pantalla. Esto mejora el rendimiento y la eficiencia al mostrar listas largas.
+
+ListView.separated: Este tipo de ListView es similar a ListView.builder, pero agrega separadores entre los elementos de la lista. Puedes personalizar el separador utilizando el parámetro "separatorBuilder".
+
+ListView.custom: Este tipo de ListView te permite tener un control total sobre la construcción de los elementos de la lista. Puedes personalizar completamente la apariencia y el diseño de cada elemento utilizando el parámetro "childrenDelegate".
+
+### Diferencia entre Column() y Stack()
+
+El widget Column() organiza sus elementos secundarios en una matriz vertical o columna en el eje horizontal del diseño. Esto significa que los elementos secundarios se apilan uno encima del otro en orden vertical. Es útil cuando se desea mostrar una lista de elementos o cuando se necesita una disposición vertical de widgets.
+
+Por otro lado, el widget Stack() organiza sus elementos secundarios en una pila, donde los elementos se superponen unos sobre otros. Esto permite colocar elementos secundarios en capas y controlar su posición relativa. Es útil cuando se desea superponer elementos, como superponer un botón en la parte superior de una imagen de fondo.
+
+En resumen, la diferencia principal entre Column() y Stack() es la forma en que organizan y muestran sus elementos secundarios. Column() los apila verticalmente, mientras que Stack() los superpone en capas. La elección entre ellos dependerá de la disposición y el diseño específico que se desee lograr en la interfaz de usuario de la aplicación Flutter.
+
+Es importante tener en cuenta que esta explicación se basa en la documentación y ejemplos proporcionados por la comunidad de Flutter y puede haber otros detalles o casos de uso específicos que no se mencionen aquí.
+
+## Configuration to use Assets
+
+Dentro de el archivo `pubspec.yaml` agrega:
+
+``` yaml
+    assets:
+        - assets/images/
 ```
 
-- Crear Widget principal de screen
+## Configuration for state management
 
-```bash
-    stles
+### Provider
+
+Para consumir este state management necesitas declararlo en la parte mas alta de tu app
+ó en lo mas alto de donde quieres que se consuma ese estado.
+
+The easiest way to read a value is by using the extension methods on [BuildContext]:
+
+```Text
+context.watch<T>(), which makes the widget listen to changes on T
+context.read<T>(), which returns T without listening to it
+context.select<T, R>(R cb(T value)), which allows a widget to listen to only a small part of T.
 ```
 
-- Crear un nuevo main()
-
-    mate
-
-## Links to resources
-
-[Icons](https://fonts.google.com/icons?selected=Material+Symbols+Outlined:settings:FILL@0;wght@400;GRAD@0;opsz@24&icon.platform=android)
-
-[YesOrNot](https://yesno.wtf/)
-
-[Módulos](https://pub.dev/)
-
-## Possible mistakes
-
-- warning: in the working copy of 'windows/flutter/generated_plugins.cmake', LF will be replaced by CRLF the next time Git touches it
-
-La advertencia en sí no es un error crítico y no afectará el funcionamiento de tu proyecto. Sin embargo, si deseas evitar esta advertencia, puedes configurar Git para que mantenga los saltos de línea originales en lugar de reemplazarlos. Puedes hacerlo ejecutando el siguiente comando en la línea de comandos de Git:
-
-```bash
-    git config core.autocrlf false
-```
-
-## Asserts types
+Utiliza el 'MultiProvider' y dentro crea la instancia inicial de tu provider, si no necesitas el contexto del builder solo usa '_'
 
 ```dart
-
-        AppTheme({this.selectedColor = 0})
-        : assert(selectedColor >= 0 && selectedColor < _colorThemes.length,
-            'Color must be between 0 and ${_colorThemes.length - 1}');
-
-        Square({ required double side })
-        : assert( side >= 0, 'side must be >= 0'), // assert = validaciones
-            _side = side;
+    @override
+    Widget build(BuildContext context) {
+        <!-- MultiProvider -->
+        return MultiProvider(
+        providers: [
+            ChangeNotifierProvider(create: (_) => ChatProvider())
+        ],
+        child: MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'Yes or Not app',
+            theme: AppTheme(isDarkMode: false, selectedColor: 6).getTheme(),
+            home: const ChatScreen(),
+        ),
+        );
+    }
 ```
-
-## Dependencies
-
-- dart pub add provider
-- dart pub add http
