@@ -1,99 +1,144 @@
-# widgets_app
+# Widgets App
 
-```CDM
-    node 16.17.0
+```sh
+node 16.17.0
 ```
 
-<details>
-  <summary>Table of Contents</summary>
+## Primeros Pasos
 
-- <a href="#notes-of-widgets">Notes of Widgets</a>
-- <a href="#configuration-to-use-assets">Configuration to used Assets</a>
-- <a href="#notes-on-folders-and-files">Notas sobre carpetas y archivos</a>
-- <a href="#configuration-for-state-management">Configuration for state management</a>
+Luego de clonar el repositorio, ejecuta:
+
+```sh
+# Instala las dependencias del proyecto
+flutter pub get
+```
+
+### Creación de un Emulador
+
+Si no tienes creado un emulador, puedes hacerlo desde Android Studio:
+
+1. Abre Android Studio.
+2. Ve a **Tools > AVD Manager**.
+3. Crea un nuevo dispositivo virtual siguiendo las instrucciones.
+4. Selecciona un dispositivo y una imagen del sistema, por ejemplo API 34.
+5. Configura las opciones del emulador según tus necesidades (nombre, resolución: 1444x3120, etc.).
+6. Una vez creado, inicia el emulador desde el AVD Manager.
+7. Para usar el emulador en VS Code, selecciona el emulador en la barra de estado inferior y ejecuta tu aplicación con **F5**.
+
+## Creación de un Nuevo Proyecto
+
+Para crear un nuevo proyecto de Flutter, puedes usar la extensión de Flutter en Visual Studio Code:
+
+1. Presiona **Ctrl + Shift + P**.
+2. Escribe "Flutter: New Project".
+
+También puedes usar la terminal con el siguiente comando:
+
+```sh
+flutter create nombre_del_proyecto
+```
+
+> **Nota:** Asegúrate de que el nombre del proyecto no contenga espacios ni caracteres especiales. Utiliza guiones bajos (`_`) o mayúsculas para separar palabras.
+
+---
+
+<details>
+  <summary>Tabla de Contenidos</summary>
+
+- [Notas sobre Widgets](#notas-sobre-widgets)
+- [Configuración para Usar Assets](#configuracion-para-usar-assets)
+- [Notas sobre Carpetas y Archivos](#notas-sobre-carpetas-y-archivos)
+- [Configuración para Gestión de Estado](#configuracion-para-gestion-de-estado)
 
 </details>
 
-## Links
+---
 
-- [Go router](https://pub.dev/packages/go_router)
-- [Material example widgets](https://m3.material.io/develop/flutter)
+## Links Útiles
+
+- [Go Router](https://pub.dev/packages/go_router)
+- [Material Example Widgets](https://m3.material.io/develop/flutter)
 - [Provider](https://pub.dev/packages/provider)
 - [Riverpod](https://docs-v2.riverpod.dev/docs/concepts/about_code_generation)
-- [Quicktype, format](https://quicktype.io/)
+- [Quicktype, Format](https://quicktype.io/)
 
-## Notes on folders and files
+---
 
-La carpeta 'domain' se utiliza para almacenar las entidades de tu aplicación. Las entidades son objetos que representan conceptos clave en tu dominio de negocio. Por ejemplo, si estás construyendo una aplicación de comercio electrónico, podrías tener entidades como 'Producto', 'Carrito de compras' o 'Usuario'.
+## Notas sobre Carpetas y Archivos
 
-también puede contener otros elementos relacionados con la lógica de negocio, como interfaces de repositorio, casos de uso y validaciones. Estos elementos ayudan a definir cómo interactúan las entidades con otras capas de la aplicación, como la capa de infraestructura o la capa de presentación.
+### `domain`
 
-Las entidades encapsulan la lógica y el comportamiento relacionados con el dominio
+La carpeta `domain` se utiliza para almacenar las entidades de tu aplicación. Las entidades son objetos que representan conceptos clave en tu dominio de negocio. Por ejemplo, si estás construyendo una aplicación de comercio electrónico, podrías tener entidades como `Producto`, `Carrito de Compras` o `Usuario`.
 
-La carpeta 'infrastructure' es un punto medio entre domain y presentation
+También puede contener otros elementos relacionados con la lógica de negocio, como interfaces de repositorio, casos de uso y validaciones. Estos elementos ayudan a definir cómo interactúan las entidades con otras capas de la aplicación, como la capa de infraestructura o la capa de presentación.
 
-## Notes of Widgets
+Las entidades encapsulan la lógica y el comportamiento relacionados con el dominio.
 
-### ListView() y sus tipos
+### `infrastructure`
 
-El widget ListView se utiliza para construir una lista de widgets desplazables
+La carpeta `infrastructure` actúa como un punto medio entre `domain` y `presentation`.
 
-ListView.builder: Este tipo de ListView es ideal cuando tienes una lista de elementos de longitud desconocida o muy grande. Utiliza un constructor de elementos bajo demanda, lo que significa que solo se construyen los elementos visibles en la pantalla. Esto mejora el rendimiento y la eficiencia al mostrar listas largas.
+---
 
-ListView.separated: Este tipo de ListView es similar a ListView.builder, pero agrega separadores entre los elementos de la lista. Puedes personalizar el separador utilizando el parámetro "separatorBuilder".
+## Notas sobre Widgets
 
-ListView.custom: Este tipo de ListView te permite tener un control total sobre la construcción de los elementos de la lista. Puedes personalizar completamente la apariencia y el diseño de cada elemento utilizando el parámetro "childrenDelegate".
+### `ListView()` y sus Tipos
 
-### Diferencia entre Column() y Stack()
+El widget `ListView` se utiliza para construir una lista de widgets desplazables.
 
-El widget Column() organiza sus elementos secundarios en una matriz vertical o columna en el eje horizontal del diseño. Esto significa que los elementos secundarios se apilan uno encima del otro en orden vertical. Es útil cuando se desea mostrar una lista de elementos o cuando se necesita una disposición vertical de widgets.
+- **ListView.builder**: Ideal para listas de longitud desconocida o muy grande. Utiliza un constructor de elementos bajo demanda, mejorando el rendimiento.
+- **ListView.separated**: Similar a `ListView.builder`, pero agrega separadores entre los elementos de la lista.
+- **ListView.custom**: Permite un control total sobre la construcción de los elementos de la lista.
 
-Por otro lado, el widget Stack() organiza sus elementos secundarios en una pila, donde los elementos se superponen unos sobre otros. Esto permite colocar elementos secundarios en capas y controlar su posición relativa. Es útil cuando se desea superponer elementos, como superponer un botón en la parte superior de una imagen de fondo.
+### Diferencia entre `Column()` y `Stack()`
 
-En resumen, la diferencia principal entre Column() y Stack() es la forma en que organizan y muestran sus elementos secundarios. Column() los apila verticalmente, mientras que Stack() los superpone en capas. La elección entre ellos dependerá de la disposición y el diseño específico que se desee lograr en la interfaz de usuario de la aplicación Flutter.
+- **Column**: Organiza elementos secundarios en una matriz vertical.
+- **Stack**: Superpone elementos secundarios en capas.
 
-Es importante tener en cuenta que esta explicación se basa en la documentación y ejemplos proporcionados por la comunidad de Flutter y puede haber otros detalles o casos de uso específicos que no se mencionen aquí.
+La elección entre ellos dependerá del diseño específico que se desee lograr.
 
-## Configuration to use Assets
+---
 
-Dentro de el archivo `pubspec.yaml` agrega:
+## Configuración para Usar Assets
 
-``` yaml
-    assets:
-        - assets/images/
+Dentro del archivo `pubspec.yaml`, agrega:
+
+```yaml
+assets:
+  - assets/images/
 ```
 
-## Configuration for state management
+---
+
+## Configuración para Gestión de Estado
 
 ### Provider
 
-Para consumir este state management necesitas declararlo en la parte mas alta de tu app
-ó en lo mas alto de donde quieres que se consuma ese estado.
+Para consumir este state management, necesitas declararlo en la parte más alta de tu app o en lo más alto de donde quieres que se consuma ese estado.
 
-The easiest way to read a value is by using the extension methods on [BuildContext]:
-
-```Text
-context.watch<T>(), which makes the widget listen to changes on T
-context.read<T>(), which returns T without listening to it
-context.select<T, R>(R cb(T value)), which allows a widget to listen to only a small part of T.
-```
-
-Utiliza el 'MultiProvider' y dentro crea la instancia inicial de tu provider, si no necesitas el contexto del builder solo usa '_'
+#### Métodos de Extensión en `BuildContext`
 
 ```dart
-    @override
-    Widget build(BuildContext context) {
-        <!-- MultiProvider -->
-        return MultiProvider(
-        providers: [
-            ChangeNotifierProvider(create: (_) => ChatProvider())
-        ],
-        child: MaterialApp(
-            debugShowCheckedModeBanner: false,
-            title: 'Yes or Not app',
-            theme: AppTheme(isDarkMode: false, selectedColor: 6).getTheme(),
-            home: const ChatScreen(),
-        ),
-        );
-    }
+context.watch<T>(), // Escucha los cambios en T
+context.read<T>(), // Devuelve T sin escucharlo
+context.select<T, R>(R cb(T value)), // Escucha solo una parte de T
+```
+
+#### Ejemplo con `MultiProvider`
+
+```dart
+@override
+Widget build(BuildContext context) {
+  return MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (_) => ChatProvider())
+    ],
+    child: MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Yes or Not app',
+      theme: AppTheme(isDarkMode: false, selectedColor: 6).getTheme(),
+      home: const ChatScreen(),
+    ),
+  );
+}
 ```
